@@ -48,6 +48,15 @@ gameBoard[i]="";
 console.log("new gameboard initialized  "+ gameBoard.length);
 }// close gameBoardInit 
 
+//function for debuggin purposes
+function debugBoard(gameBoard){
+console.log("["+gameBoard[0] +"]["+ gameBoard[1] + "][" + gameBoard[2]+"]");
+console.log("["+gameBoard[3] +"]["+ gameBoard[4] + "][" + gameBoard[5]+"]");
+console.log("["+gameBoard[6] +"]["+ gameBoard[7] + "][" + gameBoard[8]+"]");
+
+}
+
+
 
 //////////////////////////////////////////////////////////
 // function to check if there's a winner
@@ -83,7 +92,7 @@ gameBoard[squareNum]=player;
 
 //debug purpose
 console.log("marked SQ# {"+squareNum + "} for player [" + player+"]" +typeof(squareNum));
-
+debugBoard(gameBoard);
 }//markSquare
 
 
