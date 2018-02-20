@@ -1,0 +1,172 @@
+	<!DOCTYPE html>
+<html>
+<head>
+
+
+	<link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css'>
+	<link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css'>
+	<!--<link rel="stylesheet" href="FCCJSCalculator.css">-->
+	<link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+
+<!--	<script src=' http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js'></script> -->
+
+	<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
+
+	<style>
+</style>
+<script>
+$( document ).ready(function() {
+    console.log( "ready!" );
+var gameBoard=[];
+const player1 = "0";
+const player2 = "1";
+const man = "man"
+const machine ="machine"
+//var man;
+//var machine;
+const winCombos =[
+[0,1,2],
+[3,4,5],
+[6,7,8],
+[0,3,6],
+[1,4,7],
+[2,5,8],
+[0,4,8],
+[2,4,6]
+
+];
+
+//initialize board ////////////////////////////////////// 
+function gameBoardInit(gameBoard){
+for (let i =0; i<9; i++){
+console.log("initializing");
+gameBoard[i]="";	
+// clear board squares graphics... TBD later
+}
+console.log("new gameboard initialized  "+ gameBoard.length);
+}// close gameBoardInit 
+
+
+//////////////////////////////////////////////////////////
+// function to check if there's a winner
+function checkSquare(gameBoard, idx, player){
+	if  (gameBoard[idx] == player ){
+		return 1
+	} else return 0;
+}
+
+function checkWin(gameBoard){
+for (let i = 0; i< winCombos.length; i++){
+var comboResult = checkSquare (gameBoard, winCombos[i][0] )+
+checkSquare (gameBoard, winCombos[i][0] ) +
+checkSquare (gameBoard, winCombos[i][0] );
+//for debugging
+console.log("checkWin for combo [" +i+ "] is :::" + comboSquare);
+
+}// for
+
+}//checkWin
+
+
+
+
+//test gameBoardInit
+gameBoardInit(gameBoard);
+
+//change gui
+function markSquare(id, player){
+}
+function markSquare(gameBoard, squareNum, player){
+gameBoard[squareNum]=player;
+
+//debug purpose
+console.log("marked SQ# {"+squareNum + "} for player [" + player+"]" +typeof(squareNum));
+
+}//markSquare
+
+
+
+//////////////////////////////////////////
+// stuff to do on/after a move click
+function playedMove(gameBoard, squareNum, player){
+	// wait for click
+	alert( "Handler for .click() called." + squareNum);
+//mark square
+markSquare(gameBoard, squareNum, player);
+
+
+
+// check win
+// next turn
+
+
+}
+
+
+// when user clicks on a square 
+$( ".square" ).click(function(){
+	playedMove(gameBoard, parseInt($(this).attr('id')), man ) ;
+	// can only be human player
+})
+	
+	
+
+const squares = document.querySelectorAll('squares'); 
+function newGame(){
+
+
+} 
+
+function endGame(){
+}
+
+
+
+
+
+
+
+
+
+
+
+});// doc.ready
+
+
+
+</script>
+</head>
+<body>
+
+
+<div id="board" class="container">
+
+	<div id="topRow" class="row">
+<button id="0" class="square col-xs-4 btn btn-primary">SQ1</button>
+
+<button id="1" class="square col-xs-4 btn btn-primary">SQ2</button>
+<button id="2" class="square col-xs-4 btn btn-primary">SQ3</button>
+</div>
+<div id"centerRow" class="row">
+<button id="3" class="square col-xs-4 btn btn-primary">SQ4</button>
+<button id="4" class="square col-xs-4 btn btn-primary">SQ5</button>
+<button id="5" class="square col-xs-4 btn btn-primary">SQ6</button>
+</div>
+<div id="bottomRow" class="row">
+<button id="6" class="square col-xs-4 btn btn-primary">SQ7</button>
+<button id="7" class="square col-xs-4 btn btn-primary">SQ8</button>
+<button id="8" class="square col-xs-4 btn btn-primary">SQ9</button>
+</div>
+
+
+
+<div id="buttons row" class="row">
+<button id="startReset" class="btn btn-danger col-xs-6">START/RESET</button>
+
+</div>
+</div><!--board-->
+
+
+</body>
