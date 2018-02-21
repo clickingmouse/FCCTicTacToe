@@ -17,9 +17,11 @@
 	<style>
 </style>
 <script>
+var playerSelection = "HELLo";	
 $( document ).ready(function() {
     console.log( "ready!" );
 var gameBoard=[];
+
 const player1 = "0";
 const player2 = "1";
 const man = "man"
@@ -41,10 +43,13 @@ const winCombos =[
 //initialize board ////////////////////////////////////// 
 function gameBoardInit(gameBoard){
 for (let i =0; i<9; i++){
-console.log("initializing");
-gameBoard[i]="";	
+console.log("Clearing squares");
+gameBoard[i]="";
+$("#"+i).html("SQ"+i);	
 // clear board squares graphics... TBD later
+
 }
+
 console.log("new gameboard initialized  "+ gameBoard.length);
 }// close gameBoardInit 
 
@@ -66,45 +71,61 @@ function checkSquare(gameBoard, idx, player){
 	} else return 0;
 }
 
-function checkWin(gameBoard){
+function checkWin(gameBoard, player){
+	console.log("checking.... for...."+player)
 for (let i = 0; i< winCombos.length; i++){
-var comboResult = checkSquare (gameBoard, winCombos[i][0] )+
-checkSquare (gameBoard, winCombos[i][0] ) +
-checkSquare (gameBoard, winCombos[i][0] );
+var comboResult = checkSquare (gameBoard, winCombos[i][0], player )+
+checkSquare (gameBoard, winCombos[i][1],player ) +
+checkSquare (gameBoard, winCombos[i][2],player  );
 //for debugging
-console.log("checkWin for combo [" +i+ "] is :::" + comboSquare);
-
+console.log("checkWin for combo [" +i+ "] is :::" + comboResult);
+if (comboResult ==3) return 1
 }// for
-
+ return 0
 }//checkWin
 
+// function nextTurn
+function nextTurn(gameBoard, player){
+//check player, then give gameBoard to "other" player
+//... what to do..?
+
+}
 
 
 
 //test gameBoardInit
-gameBoardInit(gameBoard);
+//gameBoardInit(gameBoard);
 
 //change gui
-function markSquare(id, player){
-}
+//function markSquare(id, player){}
+
 function markSquare(gameBoard, squareNum, player){
 gameBoard[squareNum]=player;
 
 //debug purpose
 console.log("marked SQ# {"+squareNum + "} for player [" + player+"]" +typeof(squareNum));
 debugBoard(gameBoard);
+// check if theres's a winner after move
+if (checkWin(gameBoard,player)) { console.log("WE have a winner-----" + player+"!!!")}
+
 }//markSquare
 
 
+function markDOM (id, player){
+	console.log("MARKING<>>>>"+id+" "+ typeof(id) +" player Selection "+ [playerSelection]);
+	element= "#"+id;
+$("#"+id).html(playerSelection);
 
+
+}
 //////////////////////////////////////////
 // stuff to do on/after a move click
 function playedMove(gameBoard, squareNum, player){
 	// wait for click
-	alert( "Handler for .click() called." + squareNum);
+//	alert( "Handler for .click() called." + squareNum);
 //mark square
 markSquare(gameBoard, squareNum, player);
-
+//markDOM ();
 
 
 // check win
@@ -116,13 +137,42 @@ markSquare(gameBoard, squareNum, player);
 
 // when user clicks on a square 
 $( ".square" ).click(function(){
+	markDOM($(this).attr('id'));
 	playedMove(gameBoard, parseInt($(this).attr('id')), man ) ;
 	// can only be human player
 })
-	
-	
 
-const squares = document.querySelectorAll('squares'); 
+//form submit refreshes the page and resets all the variables???
+//$("form").submit(function(){
+	$( "#newGame" ).click(function(){
+    //alert("Submitted");
+var XOselection = document.querySelector('input[name="XorO"]:checked').value;
+	//testing  
+//	var score = document.querySelector('input[name="scores"]:checked').value;
+       gameBoardInit(gameBoard);
+	   console.log("after init");
+	   playerSelection = XOselection;
+   console.log("changed player selection" +playerSelection);
+   //alert(XOselection + ' was selected!');
+
+console.log("+++++++================+++++++++++++++++++============");
+
+});
+
+// when user clicks on a reset/New Game
+// below is replaced by form submit above
+/*
+$( "#newGame" ).click(function(){
+	//console.log($this);
+	gameBoardInit(gameBoard);
+
+	// can only be human player
+})
+*/
+
+
+
+//const squares = document.querySelectorAll('squares'); 
 function newGame(){
 
 
@@ -158,7 +208,7 @@ function endGame(){
 <button id="1" class="square col-xs-4 btn btn-primary">SQ2</button>
 <button id="2" class="square col-xs-4 btn btn-primary">SQ3</button>
 </div>
-<div id"centerRow" class="row">
+<div id="centerRow" class="row">
 <button id="3" class="square col-xs-4 btn btn-primary">SQ4</button>
 <button id="4" class="square col-xs-4 btn btn-primary">SQ5</button>
 <button id="5" class="square col-xs-4 btn btn-primary">SQ6</button>
@@ -170,11 +220,21 @@ function endGame(){
 </div>
 
 
+<!-- X or O selector -->
+<div id="buttons row" class="row"></div>
 
-<div id="buttons row" class="row">
-<button id="startReset" class="btn btn-danger col-xs-6">START/RESET</button>
+<!--<form id="XorO"> -->
+	<strong>Select you X or O</strong><br>
+		<label><input type="radio" name="XorO" value="X">X</label>
+		<br>
+		<label><input type="radio" name="XorO" value ="O" checked="checked">O</label>
+		<br>
+<button  id="newGame" class="btn btn-danger col-xs-4">NEW GAME</button>
+<!--</form> -->
 
-</div>
+</div>q
+
+
 </div><!--board-->
 
 
