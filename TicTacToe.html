@@ -85,6 +85,14 @@ if (comboResult ==3) return 1
 }//checkWin
 
 
+//check DrAW
+function checkDraw (gameBoard ){
+//check if gameBoardarray is filled.
+console.log("CHECK FOR DRAW"+gameBoard.indexOf(" "));
+if (gameBoard.indexOf(" ") == -1 ){
+	console.log ("DRAW");
+}
+}
 
 // randomly mark a square
 function machineMove(gameBoard,player){
@@ -97,6 +105,7 @@ if (playerSelection == "0"){
 }
 
 markDOM (xMarksTheSpot, player);
+checkWin(gameBoard, player)
 nextTurn(gameBoard, player);
 }
 
@@ -104,6 +113,7 @@ nextTurn(gameBoard, player);
 // function nextTurn//
 //////////////////////
 function nextTurn(gameBoard, player){
+	checkDraw (gameBoard );
 	console.log("passing turn from " +player);
 if (player == 'man'){
 	console.log("....machine turn!");
@@ -132,7 +142,7 @@ gameBoard[squareNum]=player;
 console.log("marked SQ# {"+squareNum + "} for player [" + player+"]" +typeof(squareNum));
 debugBoard(gameBoard);
 // check if theres's a winner after move
-if (checkWin(gameBoard,player)) { console.log("WE have a winner-----" + player+"!!!")}
+if (checkWin(gameBoard,player)) { console.log(player + "WINS !!!"); }
 else {
 nextTurn(gameBoard,player)
 }
