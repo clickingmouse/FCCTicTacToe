@@ -17,15 +17,15 @@
 	<style>
 </style>
 <script>
-var playerSelection = "HELLo";	
+var playerSelection = "O";	
 $( document ).ready(function() {
     console.log( "ready!" );
 var gameBoard=[];
 
 const player1 = "0";
 const player2 = "1";
-const man = "man"
-const machine ="machine"
+var man = "man" ;
+var machine ="machine";
 //var man;
 //var machine;
 const winCombos =[
@@ -44,7 +44,7 @@ const winCombos =[
 function gameBoardInit(gameBoard){
 for (let i =0; i<9; i++){
 console.log("Clearing squares");
-gameBoard[i]="";
+gameBoard[i]=" ";
 $("#"+i).html("SQ"+i);	
 // clear board squares graphics... TBD later
 
@@ -84,21 +84,47 @@ if (comboResult ==3) return 1
  return 0
 }//checkWin
 
-// function nextTurn
+
+
+// randomly mark a square
+function machineMove(gameBoard,player){
+var xMarksTheSpot = gameBoard.indexOf(" ");
+console.log(xMarksTheSpot +" is empty for player:" +player );
+markSquare(gameBoard, xMarksTheSpot, player);
+var XorO="O";
+if (playerSelection == "0"){
+	XorO = X;
+}
+
+markDOM (xMarksTheSpot, player);
+nextTurn(gameBoard, player);
+}
+
+//////////////////////
+// function nextTurn//
+//////////////////////
 function nextTurn(gameBoard, player){
+	console.log("passing turn from " +player);
+if (player == 'man'){
+	console.log("....machine turn!");
+
+	machineMove(gameBoard, machine)
+}
+	}
 //check player, then give gameBoard to "other" player
 //... what to do..?
 
-}
+
 
 
 
 //test gameBoardInit
-//gameBoardInit(gameBoard);
+gameBoardInit(gameBoard);
 
 //change gui
-//function markSquare(id, player){}
-
+///////////////////////////////////////
+//function markSquare(id, player){}  //
+///////////////////////////////////////
 function markSquare(gameBoard, squareNum, player){
 gameBoard[squareNum]=player;
 
@@ -107,14 +133,25 @@ console.log("marked SQ# {"+squareNum + "} for player [" + player+"]" +typeof(squ
 debugBoard(gameBoard);
 // check if theres's a winner after move
 if (checkWin(gameBoard,player)) { console.log("WE have a winner-----" + player+"!!!")}
-
+else {
+nextTurn(gameBoard,player)
+}
 }//markSquare
 
 
 function markDOM (id, player){
 	console.log("MARKING<>>>>"+id+" "+ typeof(id) +" player Selection "+ [playerSelection]);
 	element= "#"+id;
-$("#"+id).html(playerSelection);
+	var piece = "O";
+	if (player == "man") {
+		piece = playerSelection;
+	}
+	if (player == "machine"){
+		if (playerSelection == "O" ){piece = "X"} else {piece ="O"} 
+		if (playerSelection == "X" ){piece = "O"} else {piece ="X"} 
+
+	}
+$("#"+id).html(piece);
 
 
 }
