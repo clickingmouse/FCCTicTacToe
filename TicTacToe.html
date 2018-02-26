@@ -15,6 +15,24 @@
 	<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
 
 	<style>
+
+		.square{
+			height:150px;
+			width:150px;
+			border:3px solid;
+		}
+		#result{
+			height : 250px;
+		font-size:50px;
+		line-height: 200px; 
+		text-align: center;	
+		vertical-align: middle;
+		background-color:greenyellow;
+	opacity:0.5;
+	//visibility: hidden;
+	position: relative;
+	top:-450px;
+		}
 </style>
 <script>
 var playerSelection = "O";	
@@ -44,10 +62,13 @@ const winCombos =[
 function gameBoardInit(gameBoard){
 for (let i =0; i<9; i++){
 console.log("Clearing squares");
-gameBoard[i]=" ";
-$("#"+i).html("SQ"+i);	
+gameBoard[i]="-";
+//$("#"+i).html("SQ"+i);	
+$("#result").css("visibility","hidden");
+$("#"+i).css("pointer-events","auto");
 // clear board squares graphics... TBD later
-
+$("#"+i).html("");	
+$("#result").html("");
 }
 
 console.log("new gameboard initialized  "+ gameBoard.length);
@@ -89,14 +110,21 @@ if (comboResult ==3) return 1
 function checkDraw (gameBoard ){
 //check if gameBoardarray is filled.
 console.log("CHECK FOR DRAW"+gameBoard.indexOf(" "));
-if (gameBoard.indexOf(" ") == -1 ){
+if (gameBoard.indexOf("-") == -1 ){
 	console.log ("DRAW");
+	$("#result").html("DRAW GAME");
+	$("#result").css("visibility","visible");
+	$("#result").click(function(){
+			console.log("new game");
+			var newGameBoard =[];
+			gameBoardInit(gameBoard);
+		});
 }
 }
 
 // randomly mark a square
 function machineMove(gameBoard,player){
-var xMarksTheSpot = gameBoard.indexOf(" ");
+var xMarksTheSpot = gameBoard.indexOf("-");
 console.log(xMarksTheSpot +" is empty for player:" +player );
 markSquare(gameBoard, xMarksTheSpot, player);
 var XorO="O";
@@ -142,7 +170,35 @@ gameBoard[squareNum]=player;
 console.log("marked SQ# {"+squareNum + "} for player [" + player+"]" +typeof(squareNum));
 debugBoard(gameBoard);
 // check if theres's a winner after move
-if (checkWin(gameBoard,player)) { console.log(player + "WINS !!!"); }
+if (checkWin(gameBoard,player)) { 
+	console.log(player + "WINS !!!"); 
+	if (player == "man"){
+		$("#result").html("YOU WIN");
+		$("#result").css("visibility","visible");
+		//newGameBoard=[];
+		$("#result").click(function(){
+			console.log("new game");
+			var newGameBoard =[];
+			gameBoardInit(gameBoard);
+		});
+	//alert ("YOU WIN !!!")
+	//gameBoardInit(gameBoard);
+	}
+	else if (player =="machine")
+	{ 
+		//alert ("YOU LOSE !!!");
+		console.log("YOU LOSE");
+		$("#result").html("YOU LOSE");
+		$("#result").css("visibility","visible");
+		$("#result").click(function(){
+			console.log("new game");
+			var newGameBoard =[];
+			gameBoardInit(gameBoard);
+		});
+
+	//	gameBoardInit(gameBoard);
+	}
+	}
 else {
 nextTurn(gameBoard,player)
 }
@@ -162,6 +218,7 @@ function markDOM (id, player){
 
 	}
 $("#"+id).html(piece);
+$("#"+id).css("pointer-events","none");
 
 
 }
@@ -186,6 +243,9 @@ markSquare(gameBoard, squareNum, player);
 $( ".square" ).click(function(){
 	markDOM($(this).attr('id'));
 	playedMove(gameBoard, parseInt($(this).attr('id')), man ) ;
+	var SQ=$(this).attr('id');
+	console.log(SQ);
+	$(this).css("pointer-events","none");
 	// can only be human player
 })
 
@@ -249,21 +309,21 @@ function endGame(){
 
 <div id="board" class="container">
 
-	<div id="topRow" class="row">
-<button id="0" class="square col-xs-4 btn btn-primary">SQ1</button>
+<div id="topRow" class="row">
+<button id="0" class="square col-xs-4 btn btn-primary"></button>
 
-<button id="1" class="square col-xs-4 btn btn-primary">SQ2</button>
-<button id="2" class="square col-xs-4 btn btn-primary">SQ3</button>
+<button id="1" class="square col-xs-4 btn btn-primary"></button>
+<button id="2" class="square col-xs-4 btn btn-primary"></button>
 </div>
 <div id="centerRow" class="row">
-<button id="3" class="square col-xs-4 btn btn-primary">SQ4</button>
-<button id="4" class="square col-xs-4 btn btn-primary">SQ5</button>
-<button id="5" class="square col-xs-4 btn btn-primary">SQ6</button>
+<button id="3" class="square col-xs-4 btn btn-primary"></button>
+<button id="4" class="square col-xs-4 btn btn-primary"></button>
+<button id="5" class="square col-xs-4 btn btn-primary"></button>
 </div>
 <div id="bottomRow" class="row">
-<button id="6" class="square col-xs-4 btn btn-primary">SQ7</button>
-<button id="7" class="square col-xs-4 btn btn-primary">SQ8</button>
-<button id="8" class="square col-xs-4 btn btn-primary">SQ9</button>
+<button id="6" class="square col-xs-4 btn btn-primary"></button>
+<button id="7" class="square col-xs-4 btn btn-primary"></button>
+<button id="8" class="square col-xs-4 btn btn-primary"></button>
 </div>
 
 
@@ -279,10 +339,10 @@ function endGame(){
 <button  id="newGame" class="btn btn-danger col-xs-4">NEW GAME</button>
 <!--</form> -->
 
-</div>q
-
+</div>
+<center><strong><div id='result'></div></strong></center>
 
 </div><!--board-->
 
 
-</body>
+</body></html>
